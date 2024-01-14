@@ -5,7 +5,7 @@ pipeline {
         maven 'maven3'
     }
    
-   
+   stages{
 
         stage("Checkout from SCM"){
                 steps {
@@ -25,15 +25,8 @@ pipeline {
                  sh "mvn test"
            }
        }
-
-      
-
-       
-       
-
-       
-
-      
-       
-    }
+   }    
 }
+      
+       
+   
