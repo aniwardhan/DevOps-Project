@@ -5,7 +5,7 @@ pipeline {
         maven 'maven3'
     }
     environment {
-	    APP_NAME = "demo-dec-project"
+	    APP_NAME = "demo-dec-project-added"
             RELEASE = "1.0.0"
             DOCKER_USER = "sampledocker546"
             DOCKER_PASS = 'docker'
@@ -77,7 +77,7 @@ pipeline {
        stage("Trivy Scan") {
            steps {
                script {
-	            sh ('docker run -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image sampledocker546/demo-dec-project:latest --no-progress --scanners vuln  --exit-code 0 --severity HIGH,CRITICAL --format table')
+	            sh ('docker run -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image sampledocker546/demo-dec-project-added:latest --no-progress --scanners vuln  --exit-code 0 --severity HIGH,CRITICAL --format table')
                }
            }
        }
