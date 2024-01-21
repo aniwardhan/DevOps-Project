@@ -5,13 +5,13 @@ pipeline {
         maven 'maven3'
     }
     environment {
-	    APP_NAME = "demo-dec-project-added"
+	    APP_NAME = "demo-dec-project"
             RELEASE = "1.0.0"
             DOCKER_USER = "sampledocker546"
             DOCKER_PASS = 'docker'
             IMAGE_NAME = "${DOCKER_USER}" + "/" + "${APP_NAME}"
             IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
-	    JENKINS_API_TOKEN = credentials("JENKINS_API_TOKEN")
+	   // JENKINS_API_TOKEN = credentials("JENKINS_API_TOKEN")
     }
     stages{
         stage("Cleanup Workspace"){
@@ -42,7 +42,7 @@ pipeline {
        stage("SonarQube Analysis"){
            steps {
 	           script {
-		        withSonarQubeEnv(credentialsId: 'sonar') { 
+		        withSonarQubeEnv(credentialsId: 'sonar-token') { 
                         sh "mvn sonar:sonar"
 		        }
 	           }	
@@ -52,7 +52,7 @@ pipeline {
        stage("Quality Gate"){
            steps {
                script {
-                    waitForQualityGate abortPipeline: false, credentialsId: 'sonar'
+                    waitForQualityGate abortPipeline: false, credentialsId: 'sonar-token'
                 }	
             }
 
@@ -91,7 +91,7 @@ pipeline {
           }
        }
 
-        stage("Trigger CD Pipeline") {
+        /*stage("Trigger CD Pipeline") {
             steps {
                 script {
                     sh "curl -v -k --user Anitha:${JENKINS_API_TOKEN} -X POST -H 'cache-control: no-cache' -H 'content-type: application/x-www-form-urlencoded' --data 'IMAGE_TAG=${IMAGE_TAG}' 'ec2-35-153-158-10.compute-1.amazonaws.com:8080/job/SecondProject/buildWithParameters?token=gitops-token'"
@@ -110,7 +110,7 @@ pipeline {
             emailext body: '''${SCRIPT, template="groovy-html.template"}''', 
                      subject: "${env.JOB_NAME} - Build # ${env.BUILD_NUMBER} - Successful", 
                      mimeType: 'text/html',to: "aniwardhan@gmail.com"
-      }      
+      }    */  
         
    }
 }
