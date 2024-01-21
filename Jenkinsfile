@@ -14,11 +14,11 @@ pipeline {
 	   // JENKINS_API_TOKEN = credentials("JENKINS_API_TOKEN")
     }
     stages{
-        stage("Cleanup Workspace"){
+        /*stage("Cleanup Workspace"){
                 steps {
                 cleanWs()
                 }
-        }
+        }*/
 
         stage("Checkout from SCM"){
                 steps {
