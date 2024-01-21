@@ -5,7 +5,7 @@ pipeline {
         maven 'maven3'
     }
     environment {
-	    APP_NAME = "demo-dec-project"
+	    APP_NAME = "demo-project-january"
             RELEASE = "1.0.0"
             DOCKER_USER = "sampledocker546"
             DOCKER_PASS = 'docker'
@@ -14,11 +14,11 @@ pipeline {
 	   // JENKINS_API_TOKEN = credentials("JENKINS_API_TOKEN")
     }
     stages{
-        /*stage("Cleanup Workspace"){
+     stage("Cleanup Workspace"){
                 steps {
                 cleanWs()
                 }
-        }*/
+        }
 
         stage("Checkout from SCM"){
                 steps {
@@ -42,7 +42,7 @@ pipeline {
        stage("SonarQube Analysis"){
            steps {
 	           script {
-		        withSonarQubeEnv(credentialsId: 'sonar-token') { 
+		        withSonarQubeEnv(credentialsId: 'sonar') { 
                         sh "mvn sonar:sonar"
 		        }
 	           }	
@@ -52,7 +52,7 @@ pipeline {
        stage("Quality Gate"){
            steps {
                script {
-                    waitForQualityGate abortPipeline: false, credentialsId: 'sonar-token'
+                    waitForQualityGate abortPipeline: false, credentialsId: 'sonar'
                 }	
             }
 
@@ -77,7 +77,7 @@ pipeline {
        stage("Trivy Scan") {
            steps {
                script {
-	            sh ('docker run -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image sampledocker546/demo-dec-project:latest --no-progress --scanners vuln  --exit-code 0 --severity HIGH,CRITICAL --format table')
+	            sh ('docker run -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image sampledocker546/demo-project-january:latest --no-progress --scanners vuln  --exit-code 0 --severity HIGH,CRITICAL --format table')
                }
            }
        }
